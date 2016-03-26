@@ -11,7 +11,7 @@
    ["-h" "--help" "Display help."]])
 
 (def token
-  "BQD3v7xf2P8X1f_ZAeCcPGrX-q96vOHSOobLLILyEAzGnAiXF_nODigOZTyEsEZ_lp-j0Naq-pdHcu_1_uwWhaLOww6HSnXHCV-2BmMDs8i3SnSi-72lQkwhAIMlVNHhzk4SOQTkAhhKzF6osfcTLUWrFKWWRFAioKTv-Hkt3qk_lanRbooLWDCIy-gtFsHCzfKsOV0vHQvbFqSszefijbcZD15KLr878JvKRWFB6KEIx3_rDw5JRrvBXtQxw9mQTN4oyN4lr_g3W2VliYikHbGzWnm_qMTXHok77Fg")
+  "") ;; Add your token here, see README
 
 (defn usage [options-summary]
   (->> ["discover-weekly-archivist will create a new Spotify playlist with the content of your \"Discover Weekly\" playlist."
@@ -75,7 +75,7 @@
     (def playlist-name (if (string? (:name options)) (:name options) (create-playlist-name)))
     (println "Public:" (:public options) " - Name:" playlist-name)
 
-    (def user_id "y3ty")
+    (def user_id "") ;; Add your login here, see README
     (def dw_owner_id "spotifydiscover")
 
     (def dw_playlist_id (get-discover-weekly-playlist-id user_id))

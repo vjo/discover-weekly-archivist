@@ -1,36 +1,49 @@
 # discover-weekly-archivist
 
-FIXME: description
+Archieve Spotify's Discover Weekly playlist in a new playlist.
+
+## Disclamer
+
+This project is build in [Clojure](http://clojure.org) without any experience, just for fun.
+
+It uses a few libraries:
+* [clj-spotify](https://github.com/blmstrm/clj-spotify)
+* [tools.cli](https://github.com/clojure/tools.cli)
 
 ## Installation
+```shell
+$ git clone https://github.com/vjo/discover-weekly-archivist.git
+$ cd discover-weekly-archivist
+```
 
-Download from http://example.com/FIXME.
+You need to set your `user_id` (spotify login) and API `token` in `src/discover_weekly_archivist/core.clj`.
+
+Then to compile:
+```shell
+$ lein uberjar
+```
 
 ## Usage
 
-FIXME: explanation
-
-    $ java -jar discover-weekly-archivist-0.1.0-standalone.jar [args]
+```shell
+$ java -jar target/uberjar/discover-weekly-archivist-0.1.0-SNAPSHOT-standalone.jar -n "Discover Weekly Backup" -p
+```
 
 ## Options
 
-FIXME: listing of options this app accepts.
+```shell
+$ java -jar target/uberjar/discover-weekly-archivist-0.1.0-SNAPSHOT-standalone.jar --help
+discover-weekly-archivist will create a new Spotify playlist with the content of your "Discover Weekly" playlist.
 
-## Examples
+Usage: discover-weekly-archivist [options]
 
-...
+Options:
+  -n, --name NAME  Optional: name of the new playlist.
+  -p, --public     Optional: make the new playlist public.
+  -h, --help       Display help.
 
-### Bugs
-
-...
-
-### Any Other Sections
-### That You Think
-### Might be Useful
+```
 
 ## License
 
-Copyright © 2016 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+TODO
