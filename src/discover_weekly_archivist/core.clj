@@ -1,7 +1,7 @@
 (ns discover-weekly-archivist.core
-  (:gen-class))
+  (:gen-class :main true))
 
 (defn -main
-  "I don't do a whole lot ... yet."
+  "Main function"
   [& args]
-  (println "Hello, World!"))
+  (println args))
