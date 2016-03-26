@@ -44,6 +44,11 @@ Options:
 
 ```
 
+## TODO
+
+- [ ] Implement `create-playlist-name` based on the date
+- [ ] oAuth?
+
 ## License
 
 TODO
