@@ -3,7 +3,9 @@
   :url "https://github.com/vjo/discover-weekly-archivist"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :dependencies [[org.clojure/clojure "1.8.0"]]
+  :dependencies [[org.clojure/clojure "1.7.0"]
+                 [org.clojure/tools.cli "0.3.3"]
+                 [clj-spotify "0.1.1"]]
   :main ^:skip-aot discover-weekly-archivist.core
   :target-path "target/%s"
   :profiles {:uberjar {:aot :all}})
