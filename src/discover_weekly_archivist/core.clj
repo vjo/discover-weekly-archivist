@@ -9,7 +9,9 @@
 (def dw-owner-id "spotifydiscover")
 
 (def cli-options
-  [["-n" "--name NAME" "Optional: name of the new playlist."]
+  [["-t" "--token TOKEN" "Required: Spotify API token."]
+   ["-l" "--login LOGIN" "Required: Spotify login."]
+   ["-n" "--name NAME" "Optional: name of the new playlist."]
    ["-p" "--public" "Optional: make the new playlist public." :default false]
    ["-h" "--help" "Display help."]])
 
@@ -80,10 +82,19 @@
     (cond
       (:help options) (exit 0 (usage summary))
       errors (exit 1 (error-msg errors)))
+
+    ; todo: right way to do the same?
+    (cond
+      (nil? (:token options))
+      (exit 1 (error-msg ["Token argument is required."])))
+    (cond
+      (nil? (:login options))
+      (exit 1 (error-msg ["Login argument is required."])))
+
     ;; Execute program with options
 
     (do-transfer
-      "" ; Add your login here, see README
-      "" ; Add your token here, see README
+      (:login options)
+      (:token options)
       (:name options)
       (:public options))))
