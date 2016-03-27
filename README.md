@@ -12,7 +12,7 @@ It uses a few libraries:
 
 ### Limitation
 
-Your `Discover Weekly` playlist should be in your 50 firsts playlist. (Pull request welcome)
+Your `Discover Weekly` playlist should be in your 50 first playlistis. (Pull request welcome)
 
 ## Installation
 ```shell
