@@ -54,7 +54,7 @@
     (:id (first (filter #(= "Discover Weekly" (:name %)) items))))) ;; return the "Discover Weekly" playlist id
 
 (defn get-playlist-tracks [playlist_id owner_id]
-  (let [{:keys [error items]} (sptfy/get-a-playlists-tracks {:playlist_id playlist_id :owner_id owner_id :fields "items(track.uri)" :limit 1 :offset 0} token)]
+  (let [{:keys [error items]} (sptfy/get-a-playlists-tracks {:playlist_id playlist_id :owner_id owner_id :fields "items(track.uri)" :limit 50 :offset 0} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     (map :uri (map :track items)))) ;; return list of tracks uri
