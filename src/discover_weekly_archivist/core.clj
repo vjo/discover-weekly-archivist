@@ -3,7 +3,6 @@
             [clojure.string :as string]
             [clj-spotify.core :as sptfy]
             [clj-time.core :as t]
-            [clj-time.periodic :as p]
             [clj-time.format :as f])
   (:gen-class :main true))
 
