@@ -1,7 +1,10 @@
 (ns discover-weekly-archivist.core
   (:require [clojure.tools.cli :refer [parse-opts]]
             [clojure.string :as string]
-            [clj-spotify.core :as sptfy])
+            [clj-spotify.core :as sptfy]
+            [clj-time.core :as t]
+            [clj-time.periodic :as p]
+            [clj-time.format :as f])
   (:gen-class :main true))
 
 (def cli-options
@@ -56,10 +59,16 @@
       error (exit 1 (error-sptfy error)))
     (map :uri (map :track items)))) ; return list of tracks uri
 
-(defn now [] (new java.util.Date))
+;; XXX find something nicer
+(defn find-current-monday []
+  (let [monday 1 ; Monday is the first day of the week
+        today (t/day-of-week (t/now))
+        diff (- monday today)
+        seq (take 2 (p/periodic-seq (t/now) (t/days diff)))]
+    (nth seq 1)))
 
 (defn create-playlist-name []
-  "yolo") ; this could be "2016-01-01 DW" with `2016-01-01` beeing the date of the Monday of the week when the script run
+  (str (#(f/unparse (f/formatters :year-month-day) %) (find-current-monday)) " Discover Weekly")) ; return something like "2016-03-21 Discover Weekly"
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
@@ -77,5 +86,4 @@
           dw_tracks (get-playlist-tracks dw_playlist_id dw_owner_id)
           new_playlist_id (create-playlist user_id playlist-name (:public options))
           snapshot_id (add-tracks-to-playlist user_id new_playlist_id dw_tracks)]
-      (println "Success, snapshotid:" snapshot_id))))
-
+      (println "Success, snapshot_id:" snapshot_id))))
