@@ -10,6 +10,10 @@ It uses a few libraries:
 * [clj-spotify](https://github.com/blmstrm/clj-spotify)
 * [tools.cli](https://github.com/clojure/tools.cli)
 
+### Limitation
+
+Your `Discover Weekly` playlist should be in your 50 firsts playlist. (Pull request welcome)
+
 ## Installation
 ```shell
 $ git clone https://github.com/vjo/discover-weekly-archivist.git
