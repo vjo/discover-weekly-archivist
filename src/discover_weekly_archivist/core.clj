@@ -59,13 +59,11 @@
       error (exit 1 (error-sptfy error)))
     (map :uri (map :track items)))) ; return list of tracks uri
 
-;; XXX find something nicer
 (defn find-current-monday []
   (let [monday 1 ; Monday is the first day of the week
         today (t/day-of-week (t/now))
-        diff (- monday today)
-        seq (take 2 (p/periodic-seq (t/now) (t/days diff)))]
-    (nth seq 1)))
+        diff (- monday today)]
+    (t/plus (t/now) (t/days diff))))
 
 (defn create-playlist-name []
   (str (#(f/unparse (f/formatters :year-month-day) %) (find-current-monday)) " Discover Weekly")) ; return something like "2016-03-21 Discover Weekly"
