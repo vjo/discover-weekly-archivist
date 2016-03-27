@@ -12,6 +12,8 @@
    ["-p" "--public" "Optional: make the new playlist public." :default false]
    ["-h" "--help" "Display help."]])
 
+(def dw-owner-id "spotifydiscover")
+
 (def token
   "") ;; Add your token here, see README
 
@@ -68,6 +70,14 @@
 (defn create-playlist-name []
   (str (#(f/unparse (f/formatters :year-month-day) %) (find-current-monday)) " Discover Weekly")) ; return something like "2016-03-21 Discover Weekly"
 
+(defn do-transfer [name, user-id, public]
+  (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
+        dw_playlist_id (get-discover-weekly-playlist-id user-id)
+        dw_tracks (get-playlist-tracks dw_playlist_id dw-owner-id)
+        new_playlist_id (create-playlist user-id playlist-name public)
+        snapshot_id (add-tracks-to-playlist user-id new_playlist_id dw_tracks)]
+    (println "Success, snapshot_id:" snapshot_id)))
+
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (parse-opts args cli-options)]
     ;; Handle help and error conditions
@@ -76,12 +86,7 @@
       errors (exit 1 (error-msg errors)))
     ;; Execute program with options
 
-    (def user_id "") ; Add your login here, see README
-    (def dw_owner_id "spotifydiscover")
-
-    (let [playlist-name (if (string? (:name options)) (:name options) (create-playlist-name))
-          dw_playlist_id (get-discover-weekly-playlist-id user_id)
-          dw_tracks (get-playlist-tracks dw_playlist_id dw_owner_id)
-          new_playlist_id (create-playlist user_id playlist-name (:public options))
-          snapshot_id (add-tracks-to-playlist user_id new_playlist_id dw_tracks)]
-      (println "Success, snapshot_id:" snapshot_id))))
+    (do-transfer
+      (:name options)
+      "" ; Add your login here, see README
+      (:public options))))
