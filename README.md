@@ -12,7 +12,7 @@ It uses a few libraries:
 
 ### Limitation
 
-Your `Discover Weekly` playlist should be in your 50 first playlistis. (Pull request welcome)
+Your `Discover Weekly` playlist should be in your 50 first playlists. (Pull request welcome)
 
 ## Installation
 ```shell
@@ -30,7 +30,7 @@ $ lein uberjar
 ## Usage
 
 ```shell
-$ java -jar target/uberjar/discover-weekly-archivist-0.1.0-SNAPSHOT-standalone.jar -n "Discover Weekly Backup" -p
+$ java -jar target/uberjar/discover-weekly-archivist-0.1.0-SNAPSHOT-standalone.jar -p
 ```
 
 ## Options
@@ -50,7 +50,6 @@ Options:
 
 ## TODO
 
-- [ ] Implement `create-playlist-name` based on the date
 - [ ] oAuth?
 
 ## License
