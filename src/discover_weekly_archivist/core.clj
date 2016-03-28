@@ -81,17 +81,9 @@
     ;; Handle help and error conditions
     (cond
       (:help options) (exit 0 (usage summary))
+      (nil? (:token options)) (exit 1 (error-msg ["Token argument is required."]))
+      (nil? (:login options)) (exit 1 (error-msg ["Login argument is required."]))
       errors (exit 1 (error-msg errors)))
-
-    ; todo: right way to do the same?
-    (cond
-      (nil? (:token options))
-      (exit 1 (error-msg ["Token argument is required."])))
-    (cond
-      (nil? (:login options))
-      (exit 1 (error-msg ["Login argument is required."])))
-
-    ;; Execute program with options
 
     (do-transfer
       (:login options)
