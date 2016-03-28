@@ -20,8 +20,6 @@ $ git clone https://github.com/vjo/discover-weekly-archivist.git
 $ cd discover-weekly-archivist
 ```
 
-You need to set your `user_id` (spotify login) and API `token` in `src/discover_weekly_archivist/core.clj`.
-
 Then to compile:
 ```shell
 $ lein uberjar
@@ -42,9 +40,11 @@ discover-weekly-archivist will create a new Spotify playlist with the content of
 Usage: discover-weekly-archivist [options]
 
 Options:
-  -n, --name NAME  Optional: name of the new playlist.
-  -p, --public     Optional: make the new playlist public.
-  -h, --help       Display help.
+  -t, --token TOKEN  Required: Spotify API token.
+  -l, --login LOGIN  Required: Spotify login.
+  -n, --name NAME    Optional: name of the new playlist.
+  -p, --public       Optional: make the new playlist public.
+  -h, --help         Display help.
 
 ```
 
