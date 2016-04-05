@@ -33,29 +33,29 @@
   (println msg)
   (System/exit status))
 
-(defn add-tracks-to-playlist [user_id playlist_id tracks token]
-  (let [{:keys [error snapshot_id]} (sptfy/add-tracks-to-a-playlist {:user_id user_id :playlist_id playlist_id :uris tracks} token)]
+(defn add-tracks-to-playlist [user-id playlist-id tracks token]
+  (let [{:keys [error snapshot_id]} (sptfy/add-tracks-to-a-playlist {:user_id user-id :playlist_id playlist-id :uris tracks} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     snapshot_id))
 
-(defn create-playlist [user_id name public token]
-  (let [{:keys [error id]} (sptfy/create-a-playlist {:user_id user_id :name name :public public} token)]
+(defn create-playlist [user-id name public token]
+  (let [{:keys [error id]} (sptfy/create-a-playlist {:user_id user-id :name name :public public} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     id)) ; return the new playlist id
 
-(defn get-discover-weekly-playlist [user_id token]
-  (let [{:keys [error items]} (sptfy/get-a-list-of-a-users-playlists {:user_id user_id :limit 50 :offset 0} token)]
+(defn get-discover-weekly-playlist [user-id token]
+  (let [{:keys [error items]} (sptfy/get-a-list-of-a-users-playlists {:user_id user-id :limit 50 :offset 0} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     (let [{:keys [id owner]} (first (filter #(= "Discover Weekly" (:name %)) items))
-          owner_id (:id owner)]
-      {:dw_playlist_id id
-       :dw_playlist_owner_id owner_id})))
+          owner-id (:id owner)]
+      {:dw-playlist-id id
+       :dw-playlist-owner-id owner-id})))
 
-(defn get-playlist-tracks [playlist_id owner_id token]
-  (let [{:keys [error items]} (sptfy/get-a-playlists-tracks {:playlist_id playlist_id :owner_id owner_id :fields "items(track.uri)" :limit 50 :offset 0} token)]
+(defn get-playlist-tracks [playlist-id owner-id token]
+  (let [{:keys [error items]} (sptfy/get-a-playlists-tracks {:playlist_id playlist-id :owner_id owner-id :fields "items(track.uri)" :limit 50 :offset 0} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     (map :uri (map :track items)))) ; return list of tracks uri
@@ -71,11 +71,11 @@
 
 (defn do-transfer [user-id, token, name, public]
   (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
-        {:keys [dw_playlist_id dw_playlist_owner_id]} (get-discover-weekly-playlist user-id token)
-        dw_tracks (get-playlist-tracks dw_playlist_id dw_playlist_owner_id token)
-        new_playlist_id (create-playlist user-id playlist-name public token)
-        snapshot_id (add-tracks-to-playlist user-id new_playlist_id dw_tracks token)]
-    (println "Success, snapshot_id:" snapshot_id)))
+        {:keys [dw-playlist-id dw-playlist-owner-id]} (get-discover-weekly-playlist user-id token)
+        dw-tracks (get-playlist-tracks dw-playlist-id dw-playlist-owner-id token)
+        new-playlist-id (create-playlist user-id playlist-name public token)
+        snapshot-id (add-tracks-to-playlist user-id new-playlist-id dw-tracks token)]
+    (println "Success, snapshot-id:" snapshot-id)))
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-options)]
