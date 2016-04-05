@@ -60,14 +60,14 @@
       error (exit 1 (error-sptfy error)))
     (map :uri (map :track items)))) ; return list of tracks uri
 
-(defn find-current-monday []
+(defn get-monday-from-week [now]
   (let [monday 1 ; Monday is the first day of the week
-        today (t/day-of-week (t/now))
+        today (t/day-of-week now)
         diff (- monday today)]
-    (t/plus (t/now) (t/days diff))))
+    (t/plus now (t/days diff))))
 
 (defn create-playlist-name []
-  (str (#(f/unparse (f/formatters :year-month-day) %) (find-current-monday)) " Discover Weekly")) ; return something like "2016-03-21 Discover Weekly"
+  (str (#(f/unparse (f/formatters :year-month-day) %) (get-monday-from-week (t/now))) " Discover Weekly")) ; return something like "2016-03-21 Discover Weekly"
 
 (defn do-transfer [user-id, token, name, public]
   (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
