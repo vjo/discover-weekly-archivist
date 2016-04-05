@@ -6,8 +6,6 @@
             [clj-time.format :as f])
   (:gen-class :main true))
 
-(def dw-owner-id "spotifydiscover")
-
 (def cli-options
   [["-t" "--token TOKEN" "Required: Spotify API token."]
    ["-l" "--login LOGIN" "Required: Spotify login."]
@@ -47,11 +45,14 @@
       error (exit 1 (error-sptfy error)))
     id)) ; return the new playlist id
 
-(defn get-discover-weekly-playlist-id [user_id token]
+(defn get-discover-weekly-playlist [user_id token]
   (let [{:keys [error items]} (sptfy/get-a-list-of-a-users-playlists {:user_id user_id :limit 50 :offset 0} token)]
     (cond
       error (exit 1 (error-sptfy error)))
-    (:id (first (filter #(= "Discover Weekly" (:name %)) items))))) ;; return the "Discover Weekly" playlist id
+    (let [{:keys [id owner]} (first (filter #(= "Discover Weekly" (:name %)) items))
+          owner_id (:id owner)]
+      {:dw_playlist_id id
+       :dw_playlist_owner_id owner_id})))
 
 (defn get-playlist-tracks [playlist_id owner_id token]
   (let [{:keys [error items]} (sptfy/get-a-playlists-tracks {:playlist_id playlist_id :owner_id owner_id :fields "items(track.uri)" :limit 50 :offset 0} token)]
@@ -70,8 +71,8 @@
 
 (defn do-transfer [user-id, token, name, public]
   (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
-        dw_playlist_id (get-discover-weekly-playlist-id user-id token)
-        dw_tracks (get-playlist-tracks dw_playlist_id dw-owner-id token)
+        {:keys [dw_playlist_id dw_playlist_owner_id]} (get-discover-weekly-playlist user-id token)
+        dw_tracks (get-playlist-tracks dw_playlist_id dw_playlist_owner_id token)
         new_playlist_id (create-playlist user-id playlist-name public token)
         snapshot_id (add-tracks-to-playlist user-id new_playlist_id dw_tracks token)]
     (println "Success, snapshot_id:" snapshot_id)))
