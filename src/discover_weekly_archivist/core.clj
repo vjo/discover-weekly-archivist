@@ -34,18 +34,21 @@
   (System/exit status))
 
 (defn add-tracks-to-playlist [user-id playlist-id tracks token]
+  "Add a list of tracks to a playlist and return a snapshot_id"
   (let [{:keys [error snapshot_id]} (sptfy/add-tracks-to-a-playlist {:user_id user-id :playlist_id playlist-id :uris tracks} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     snapshot_id))
 
 (defn create-playlist [user-id name public token]
+  "Create a new playlist and return its id"
   (let [{:keys [error id]} (sptfy/create-a-playlist {:user_id user-id :name name :public public} token)]
     (cond
       error (exit 1 (error-sptfy error)))
-    id)) ; return the new playlist id
+    id))
 
 (defn get-discover-weekly-playlist [user-id token]
+  "Return Discover Weekly playlist id and owner from a user-id"
   (let [{:keys [error items]} (sptfy/get-a-list-of-a-users-playlists {:user_id user-id :limit 50 :offset 0} token)]
     (cond
       error (exit 1 (error-sptfy error)))
@@ -55,19 +58,24 @@
        :dw-playlist-owner-id owner-id})))
 
 (defn get-playlist-tracks [playlist-id owner-id token]
+  "Return list of tracks URI from a playlist-id and owner-id"
   (let [{:keys [error items]} (sptfy/get-a-playlists-tracks {:playlist_id playlist-id :owner_id owner-id :fields "items(track.uri)" :limit 50 :offset 0} token)]
     (cond
       error (exit 1 (error-sptfy error)))
-    (map :uri (map :track items)))) ; return list of tracks uri
+    (map :uri (map :track items))))
 
-(defn get-monday-from-week [now]
+(defn get-monday-from-week [date]
+  "Return Monday from a day of a week"
   (let [monday 1 ; Monday is the first day of the week
-        today (t/day-of-week now)
+        today (t/day-of-week date)
         diff (- monday today)]
-    (t/plus now (t/days diff))))
+    (t/plus date (t/days diff))))
 
 (defn create-playlist-name []
-  (str (#(f/unparse (f/formatters :year-month-day) %) (get-monday-from-week (t/now))) " Discover Weekly")) ; return something like "2016-03-21 Discover Weekly"
+  "Create a playlist name based on current week's Monday
+   e.g. \"2016-03-21 Discover Weekly\"
+  "
+  (str (#(f/unparse (f/formatters :year-month-day) %) (get-monday-from-week (t/now))) " Discover Weekly"))
 
 (defn do-transfer [user-id, token, name, public]
   (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
