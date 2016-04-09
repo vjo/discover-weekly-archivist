@@ -40,9 +40,9 @@
       error (exit 1 (error-sptfy error)))
     snapshot_id))
 
-(defn create-playlist [user-id name public token]
+(defn create-playlist [user-id name public? token]
   "Create a new playlist and return its id"
-  (let [{:keys [error id]} (sptfy/create-a-playlist {:user_id user-id :name name :public public} token)]
+  (let [{:keys [error id]} (sptfy/create-a-playlist {:user_id user-id :name name :public public?} token)]
     (cond
       error (exit 1 (error-sptfy error)))
     id))
@@ -77,11 +77,11 @@
   "
   (str (#(f/unparse (f/formatters :year-month-day) %) (get-monday-from-week (t/now))) " Discover Weekly"))
 
-(defn do-transfer [user-id, token, name, public]
+(defn do-transfer [user-id, token, name, public?]
   (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
         {:keys [dw-playlist-id dw-playlist-owner-id]} (get-discover-weekly-playlist user-id token)
         dw-tracks (get-playlist-tracks dw-playlist-id dw-playlist-owner-id token)
-        new-playlist-id (create-playlist user-id playlist-name public token)
+        new-playlist-id (create-playlist user-id playlist-name public? token)
         snapshot-id (add-tracks-to-playlist user-id new-playlist-id dw-tracks token)]
     (println "Success, snapshot-id:" snapshot-id)))
 
