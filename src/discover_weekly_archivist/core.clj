@@ -1,7 +1,6 @@
 (ns discover-weekly-archivist.core
   (:require [clojure.tools.cli :as cli]
             [clojure.string :as string]
-            [clj-spotify.core :as sptfy]
             [clj-time.core :as t]
             [clj-time.format :as f]
             [discover-weekly-archivist.spotify-playlist-clone :as sptfy-clone])
