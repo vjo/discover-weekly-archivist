@@ -3,7 +3,7 @@
             [clojure.string :as string]
             [clj-time.core :as t]
             [clj-time.format :as f]
-            [discover-weekly-archivist.spotify-playlist-clone :as sptfy-clone])
+            [clj-spotify-playlist-copier.core :as sptfy-playlist-copier])
   (:gen-class :main true))
 
 (def cli-options
@@ -44,8 +44,8 @@
   (str (#(f/unparse (f/formatters :year-month-day) %) (get-monday-from-week (t/now))) " Discover Weekly"))
 
 (defn do-transfer [user-id, token, name, public?]
-  (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
-        hello (sptfy-clone/do-clone user-id token "Discover Weekly" playlist-name public?)]
+  (let [playlist-name (if (not (nil? name)) name (create-playlist-name))]
+    (sptfy-playlist-copier/do-copy :user-id user-id :token token :playlist-name-to-copy "Discover Weekly" :playlist-name-new playlist-name :public? public?)
     (println "Done")))
 
 (defn -main [& args]

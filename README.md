@@ -7,8 +7,9 @@ Archieve Spotify's Discover Weekly playlist in a new playlist.
 This project is build in [Clojure](http://clojure.org) without any experience, just for fun.
 
 It uses a few libraries:
-* [clj-spotify](https://github.com/blmstrm/clj-spotify)
+* [clj-spotify-playlist-copier](https://github.com/vjo/clj-spotify-playlist-copier)
 * [tools.cli](https://github.com/clojure/tools.cli)
+* [clj-time](https://github.com/clj-time/clj-time)
 
 ### Limitation
 
@@ -28,7 +29,7 @@ $ lein uberjar
 ## Usage
 
 ```shell
-$ java -jar target/uberjar/discover-weekly-archivist-0.1.0-SNAPSHOT-standalone.jar -p
+$ java -jar target/uberjar/discover-weekly-archivist-0.1.0-SNAPSHOT-standalone.jar -l "your-login" -t "your-token" -p
 ```
 
 ## Options
