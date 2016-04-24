@@ -44,9 +44,13 @@
   (str (#(f/unparse (f/formatters :year-month-day) %) (get-monday-from-week (t/now))) " Discover Weekly"))
 
 (defn do-transfer [user-id, token, name, public?]
-  (let [playlist-name (if (not (nil? name)) name (create-playlist-name))]
-    (sptfy-playlist-copier/do-copy :user-id user-id :token token :playlist-name-to-copy "Discover Weekly" :playlist-name-new playlist-name :public? public?)
-    (println "Done")))
+  (let [playlist-name (if (not (nil? name)) name (create-playlist-name))
+        {:keys [new-playlist-id]} (sptfy-playlist-copier/do-copy :user-id user-id
+                                                                 :token token
+                                                                 :playlist-name-to-copy "Discover Weekly"
+                                                                 :playlist-name-new playlist-name
+                                                                 :public? public?)]
+    (println (str "Success: https://open.spotify.com/user/" user-id "/playlist/" new-playlist-id))))
 
 (defn -main [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-options)]
